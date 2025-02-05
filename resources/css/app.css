@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.produks .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.produks .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    text-align: center;
+}
+
+.produks .card img {
+    max-width: 100%;
+    height: 250px; /* Sesuaikan ukuran gambar */
+    object-fit: cover; /* Agar gambar tidak terdistorsi */
+    margin-bottom: 10px;
+}
+
+.produks h5 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.produks p {
+    font-size: 16px;
+    color: #333;
+}
+
+.produks .btn {
+    width: 100%;
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 5px;
+}

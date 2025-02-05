@@ -1,0 +1,133 @@
+<div class="container">
+  <div class="row mt-4 mb-2">
+      <div class="col">
+          <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{{ route('home') }}" class="text-dark">Home</a></li>
+                  <li class="breadcrumb-item"><a href="{{ route('keranjang') }}" class="text-dark">Keranjang</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Check Out</li>
+              </ol>
+          </nav>
+      </div>
+  </div>
+
+  <div class="row">
+      <div class="col-md-12">
+          @if(session()->has('message'))
+          <div class="alert alert-danger">
+              {{ session('message') }}
+          </div>
+          @endif
+      </div>
+  </div>
+
+  <div class="row">
+      <div class="col">
+          <a href="{{ route('keranjang') }}" class="btn btn-sm btn-dark"><i class="fas fa-arrow-left"></i> Kembali</a>
+      </div>
+  </div>
+
+  <div class="row mt-4">
+      <div class="col">
+          <h4>Informasi Pembayaran</h4>
+          <hr>
+          <div class="media">
+              <div class="media-body">
+                  <h5 class="mt-0"></h5>
+                  <div>
+                      <label for="metode_pembayaran">Metode Pembayaran :</label><br>
+          
+                      <input type="radio" wire:model="metode_pembayaran" id="transfer" value="transfer" {{ old('metode_pembayaran') == 'transfer' ? 'checked' : '' }} required checked>
+                      <label for="transfer">Transfer</label><br>
+          
+                      <input type="radio" wire:model="metode_pembayaran" id="cod" value="cod" {{ old('metode_pembayaran') == 'cod' ? 'checked' : '' }} required>
+                      <label for="cod">COD</label><br>
+          
+                      @error('metode_pembayaran')
+                          <p style="color: red;">{{ $message }}</p>
+                      @enderror
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="col">
+          <h4>Informasi Pengiriman</h4>
+          <hr>
+          <form wire:submit.prevent="checkout">
+
+              <div class="form-group">
+                  <label for="">No. HP</label>
+                  <input id="nohp" type="text" class="form-control @error('nohp') is-invalid @enderror" wire:model="nohp"
+                  value="{{ old('nohp') }}" autocomplete="name" autofocus>
+
+                  @error('nohp')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+              </div>
+
+              <div class="form-group">
+                  <label for="">Alamat</label>
+                  <textarea wire:model="alamat" class="form-control @error('alamat') is-invalid @enderror"></textarea>
+
+                  @error('alamat')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+              </div>
+
+              <div class="form-group">
+                  <label for="">Kota</label>
+                  <input id="kota" type="text" class="form-control @error('kota') is-invalid @enderror" wire:model="kota"
+                  value="{{ old('kota') }}" autocomplete="name" autofocus>
+
+                  @error('kota')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+              </div>
+
+              <div class="form-group">
+                  <label for="">Provinsi</label>
+                  <input id="provinsi" type="text" class="form-control @error('provinsi') is-invalid @enderror" wire:model="provinsi"
+                  value="{{ old('provinsi') }}" autocomplete="name" autofocus>
+
+                  @error('provinsi')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+              </div>
+
+              <div class="form-group">
+                  <label for="">Kode Pos</label>
+                  <input id="kode_pos" type="text" class="form-control @error('kode_pos') is-invalid @enderror" wire:model="kode_pos"
+                  value="{{ old('kode_pos') }}" autocomplete="name" autofocus>
+
+                  @error('kode_pos')
+                  <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                  </span>
+                  @enderror
+              </div>
+              <div>
+                  <label for="metode_pengiriman">Metode Pengiriman :</label><br>
+      
+                  <input type="radio" wire:model="metode_pengiriman" id="jne" value="jne" {{ old('metode_pengiriman') == 'jne' ? 'checked' : '' }} required checked>
+                  <label for="jne">JNE</label><br>
+      
+                  <input type="radio" wire:model="metode_pengiriman" id="sicepat" value="sicepat" {{ old('metode_pengiriman') == 'sicepat' ? 'checked' : '' }} required>
+                  <label for="sicepat">SiCepat</label><br>
+      
+                  @error('metode_pengiriman')
+                      <p style="color: red;">{{ $message }}</p>
+                  @enderror
+              </div>
+              <button type="submit" class="btn btn-success btn-block"> <i class="fas fa-arrow-right"></i> Checkout </button>
+          </form>
+      </div>
+  </div>
+</div>
