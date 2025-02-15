@@ -16,7 +16,7 @@ A modern point-of-sale system built with Laravel for cafe and restaurant managem
 - 📄 [Installation Guide](#setup-instructions)
 - 📄 [User Manual](Buku%20Petunjuk%20Penggunaan%20Aplikasi%20Jerseyku.pdf)
 - 📄 [Technical Report](Laporan%20Tugas%20Besar%20Pemrograman%20Basis%20Data.pdf)
-- 🎥 [Demo Video](demo.pdf)
+- 🎥 [Demo Video](demo.mp4)
 - 💾 [Database File](cafe_pos.sql)
 
 ## Requirements
