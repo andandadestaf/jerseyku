@@ -28,7 +28,7 @@
     </div>
     <br>
     <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
-        <form wire::submit.prevent="checkout">
+        <form wire:submit.prevent="checkout">
             <div class="md:col-span-12 lg:col-span-8 col-span-12">
                 <!-- Card -->
                 <div class="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
@@ -38,6 +38,18 @@
                             <strong>Metode Pengiriman
                         </h3>
                         <br>
+                        <div class="form-group">
+                            <label for="">Nama Penerima</label>
+                            <input wire:model="nama" type="text" class="form-control @error('nama') border-red-500 @enderror"
+                            value="{{ old('nama') }}" autocomplete="name" autofocus>
+          
+                            @error('nama')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
                         <div class="form-group">
                             <label for="">No. HP</label>
                             <input wire:model="nohp" type="text" class="form-control @error('nohp') border-red-500 @enderror"
@@ -100,7 +112,7 @@
                         <div>
                             <label for="metode_pembayaran">Metode Pembayaran :</label><br>
                 
-                            <input type="radio" wire:model="metode_pembayaran" id="transfer" value="transfer" {{ old('metode_pembayaran') == 'transfer' ? 'checked' : '' }} required checked>
+                            <input type="radio" wire:model="metode_pembayaran" id="transfer" value="transfer" {{ old('metode_pembayaran') == 'transfer' ? 'checked' : '' }} required>
                             <label for="transfer">Transfer</label><br>
                 
                             <input type="radio" wire:model="metode_pembayaran" id="cod" value="cod" {{ old('metode_pembayaran') == 'cod' ? 'checked' : '' }} required>
@@ -114,7 +126,7 @@
                         <div>
                             <label for="metode_pengiriman">Jasa Pengiriman :</label><br>
                 
-                            <input type="radio" wire:model="metode_pengiriman" id="jne" value="jne" {{ old('metode_pengiriman') == 'jne' ? 'checked' : '' }} required checked>
+                            <input type="radio" wire:model="metode_pengiriman" id="jne" value="jne" {{ old('metode_pengiriman') == 'jne' ? 'checked' : '' }} required>
                             <label for="jne">JNE</label><br>
                 
                             <input type="radio" wire:model="metode_pengiriman" id="sicepat" value="sicepat" {{ old('metode_pengiriman') == 'sicepat' ? 'checked' : '' }} required>
@@ -127,7 +139,7 @@
                     </div>
                 </div>
             </div>
-
+        </form>
         <div class="grid grid-cols-12 gap-4">
             <div class="md:col-span-12 lg:col-span-4 col-span-12">
                 <div class="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">

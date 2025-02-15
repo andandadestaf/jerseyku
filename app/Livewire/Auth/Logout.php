@@ -12,7 +12,7 @@ class Logout extends Component
         session()->forget('auth');
         session()->invalidate();
         session()->regenerateToken();
-        return redirect('/login');
+        return redirect('/');
     }
     public function render()
     {

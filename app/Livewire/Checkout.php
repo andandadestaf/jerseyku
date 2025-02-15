@@ -10,13 +10,14 @@ use Livewire\Component;
 class Checkout extends Component
 {
     public $metode_pembayaran, $metode_pengiriman, $status_pembayaran, $status, $matauang;
-    public $nohp, $kota, $provinsi, $kode_pos, $alamat;
+    public $nohp, $kota, $provinsi, $kode_pos, $alamat, $nama;
     public $total_harga;
 
     public function mount(){
         if(!Auth::user()) {
             return redirect()->route('login');
         }
+        $this->nama = Auth::user()->nama;
         $this->nohp = Auth::user()->nohp;
         $this->kota = Auth::user()->kota;
         $this->provinsi = Auth::user()->provinsi;
@@ -38,57 +39,51 @@ class Checkout extends Component
         }
     }
 
-    public function checkout(){
-        dd('checkout method called');
-        $this->validate([
-            'metode_pembayaran',
-            'metode_pengiriman',
-            'nohp' => 'required',
-            'kota' => 'required',
-            'provinsi' => 'required',
-            'kode_pos' => 'required',
-            'alamat' => 'required',
+
+    public function checkout()
+{
+    $this->validate([
+        'nama' => 'required',
+        'metode_pembayaran' => 'required',
+        'metode_pengiriman' => 'required',
+        'nohp' => 'required',
+        'kota' => 'required',
+        'provinsi' => 'required',
+        'kode_pos' => 'required',
+        'alamat' => 'required',
+    ]);
+
+    $pesanan = Pesanan::where('user_id', Auth::id())->where('status', 'new')->first();
+    
+    if ($pesanan) {
+        // Update atau buat alamat
+        $alamat = Alamat::firstOrNew(['pesanan_id' => $pesanan->id]);
+        $alamat->fill([
+            'nama' => $this->nama,
+            'alamat' => $this->alamat,
+            'nohp' => $this->nohp,
+            'kota' => $this->kota,
+            'provinsi' => $this->provinsi,
+            'kode_pos' => $this->kode_pos,
+        ])->save();
+
+        // Update status pesanan ke 'proses' (bukan dari $this->status)
+        $pesanan->update([
+            'metode_pembayaran' => $this->metode_pembayaran,
+            'metode_pengiriman' => $this->metode_pengiriman,
+            'status' => 'proses',  // Hardcode nilai 'proses'
+            'status_pembayaran' => 'dibayar',
+            'matauang' => 'idr',
         ]);
 
-        $validate['status'] = 'proses';
-        $validate['status_pembayaran'] = 'dibayar';
-        $validate['matauang'] = 'idr';
-
-        $pesanan = Pesanan::where('user_id', Auth::user()->id)->where('status', 'new')->first();
-        if ($pesanan) {
-            // Update alamat terkait dengan pesanan
-            $alamat = Alamat::where('pesanan_id', $pesanan->id)->first();
-
-            if (!$alamat) {
-                // Jika alamat tidak ada untuk pesanan tersebut, buat alamat baru
-                $alamat = new Alamat();
-                $alamat->pesanan_id = $pesanan->id;
-            }
-            $alamat->alamat = $this->alamat;
-            $alamat->nohp = $this->nohp;
-            $alamat->kota = $this->kota;
-            $alamat->provinsi = $this->provinsi;
-            $alamat->kode_pos = $this->kode_pos;
-            $alamat->save();
-
-            $pesanan->metode_pembayaran = $this->metode_pembayaran;
-            $pesanan->metode_pengiriman = $this->metode_pengiriman;
-            $pesanan->status = $this->status;
-            $pesanan->status_pembayaran = $this->status_pembayaran;
-            $pesanan->matauang = $this->matauang;
-            $pesanan->save();
-
-            // Mengirimkan event untuk menyegarkan keranjang
-            $this->dispatch('masukanKeranjang');
-
-            // Menampilkan pesan berhasil dan redirect ke halaman home
-            session()->flash('message', 'Checkout berhasil');
-            return redirect()->route('home');
-        }
-        session()->flash('message', 'Pesanan tidak ditemukan');
-        return redirect()->route('keranjang');
+        $this->dispatch('masukanKeranjang');
+        session()->flash('message', 'Checkout berhasil');
+        return redirect()->route('home');
     }
 
+    session()->flash('message', 'Pesanan tidak ditemukan');
+    return redirect()->route('keranjang');
+}
 
     public function render()
     {

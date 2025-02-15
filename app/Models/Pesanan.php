@@ -31,6 +31,10 @@ class Pesanan extends Model
     public function alamat(){
         return $this->hasOne(Alamat::class,'pesanan_id');
     }
+
+    // public function produk(){
+    //     return $this->belongsTo(Produk::class);
+    // }
     // protected static function booted()
     // {
     // static::saving(function ($pesanan) {
